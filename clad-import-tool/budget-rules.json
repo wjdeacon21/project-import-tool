@@ -1,0 +1,9 @@
+[
+  {
+    "when": { "field": "dropType", "equals": "Pre-Buried With Splicing" },
+    "overrides": [
+      { "lineItemId": "15627", "quantity": 2 },
+      { "lineItemId": "15378", "quantity": 1 }
+    ]
+  }
+]

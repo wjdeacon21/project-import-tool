@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-t3-app@latest *)",
+      "Bash(npx shadcn@latest init --yes --defaults)",
+      "Bash(npx shadcn@latest *)",
+      "Bash(node *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(npm install *)",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __schema { mutationType { fields { name description args { name type { name kind ofType { name kind } } } } } } }\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"BudgetInput\\\\\"\\) { inputFields { name description type { name kind ofType { name kind } } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __schema { types { name kind } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"BudgetItemInput\\\\\"\\) { inputFields { name description type { name kind ofType { name kind } } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __schema { queryType { fields { name description } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ getOrg { id name users { id name email } labels { id name } customFields { id name type } lineItems { id name } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"Org\\\\\"\\) { fields { name type { name kind ofType { name kind } } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"User\\\\\"\\) { fields { name type { name kind } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"ProjectLabel\\\\\"\\) { fields { name } } __type2: __type\\(name: \\\\\"CustomProjectField\\\\\"\\) { fields { name } } __type3: __type\\(name: \\\\\"LineItem\\\\\"\\) { fields { name } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ getOrg { title users { id firstName lastName email } projectLabels { id name } customProjectFields { id title type } lineItems { id name } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ getOrg { customProjectFields { id title type } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"LineItem\\\\\"\\) { fields { name type { name kind ofType { name kind } } } } }\"}')",
+      "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"Org\\\\\"\\) { fields { name type { name kind ofType { name kind } } args { name type { name kind ofType { name kind } } } } } }\"}')",
+      "Bash(grep -E \"\\\\.\\(json|js|ts\\)$\")",
+      "Bash(curl *)"
+    ]
+  }
+}
