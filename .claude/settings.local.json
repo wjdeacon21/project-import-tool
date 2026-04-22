@@ -25,7 +25,8 @@
       "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"LineItem\\\\\"\\) { fields { name type { name kind ofType { name kind } } } } }\"}')",
       "Bash(curl -s -X POST https://app.withclad.com/api/graph -H 'Authorization: Bearer b-Ai0IfurWNi-aZK2BJ66Jhr_w6EbeMeWGR4HKpKqBA' -H 'Content-Type: application/json' -d '{\"query\":\"{ __type\\(name: \\\\\"Org\\\\\"\\) { fields { name type { name kind ofType { name kind } } args { name type { name kind ofType { name kind } } } } } }\"}')",
       "Bash(grep -E \"\\\\.\\(json|js|ts\\)$\")",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(vercel --version)"
     ]
   }
 }

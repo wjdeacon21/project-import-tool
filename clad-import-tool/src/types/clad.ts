@@ -4,6 +4,7 @@ export type ProjectRow = {
   dropType: string;
   city: string;
   startDate: string;
+  projectId: string;
 };
 
 export type SubmissionResult = {

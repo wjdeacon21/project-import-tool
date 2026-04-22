@@ -25,6 +25,7 @@ export function parseCsvToProjects(file: File): Promise<ProjectRow[]> {
         const dropTypeKey = findColumn(headers, ["drop type", "droptype", "drop_type"]);
         const cityKey = findColumn(headers, ["city"]);
         const startDateKey = findColumn(headers, ["drop install started (a)", "drop install started", "start date"]);
+        const projectIdKey = findColumn(headers, ["project id"]);
 
         const rows = results.data
           .map((row) => ({
@@ -33,6 +34,7 @@ export function parseCsvToProjects(file: File): Promise<ProjectRow[]> {
             dropType: (dropTypeKey ? (row[dropTypeKey] ?? "") : "").trim(),
             city: (cityKey ? (row[cityKey] ?? "") : "").trim(),
             startDate: (startDateKey ? (row[startDateKey] ?? "") : "").trim(),
+            projectId: (projectIdKey ? (row[projectIdKey] ?? "") : "").trim(),
           }))
           .filter((row) => row.title !== "");
 

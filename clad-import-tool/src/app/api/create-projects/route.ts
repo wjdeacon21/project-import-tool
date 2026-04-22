@@ -70,6 +70,9 @@ export async function POST(req: NextRequest) {
         project.city
           ? { fieldId: CUSTOM_FIELD_IDS.CITY, textValue: project.city }
           : null,
+        project.projectId
+          ? { fieldId: CUSTOM_FIELD_IDS.PROJECT_ID, textValue: project.projectId }
+          : null,
       ].filter(Boolean);
 
       const startsAt = project.startDate ? parseDateToISO(project.startDate) : null;
