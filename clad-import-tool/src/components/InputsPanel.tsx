@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "~/components/ui/button"
+import { Loader2 } from "lucide-react"
 import {
   Select,
   SelectContent,
@@ -28,6 +29,7 @@ interface InputsPanelProps {
   onLineItemChange: (index: number, checked: boolean) => void;
   canPreview: boolean;
   onCreatePreview: () => void;
+  isCheckingDuplicates: boolean;
   orgData: OrgData | null;
   orgDataError: string | null;
   isSubmitting: boolean;
@@ -46,11 +48,12 @@ export function InputsPanel({
   onLineItemChange,
   canPreview,
   onCreatePreview,
+  isCheckingDuplicates,
   orgData,
   orgDataError,
   isSubmitting,
 }: InputsPanelProps) {
-  const disabled = isSubmitting;
+  const disabled = isSubmitting || isCheckingDuplicates;
 
   return (
     <div className="flex w-[360px] shrink-0 flex-col rounded-xl border border-gray-200 p-6 shadow-sm">
@@ -174,7 +177,14 @@ export function InputsPanel({
           onClick={onCreatePreview}
           disabled={!canPreview || disabled}
         >
-          Create Preview
+          {isCheckingDuplicates ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Checking...
+            </>
+          ) : (
+            "Create Preview"
+          )}
         </Button>
       </div>
     </div>

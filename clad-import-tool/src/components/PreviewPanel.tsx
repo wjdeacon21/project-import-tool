@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table"
-import { Loader2 } from "lucide-react"
+import { Loader2, TriangleAlert } from "lucide-react"
 import { type ProjectRow, type SubmissionResponse, type OrgData } from "~/types/clad"
 import { type LineItem } from "~/components/ImportTool"
 
@@ -29,6 +29,7 @@ interface PreviewPanelProps {
   onSubmit: () => void;
   submissionResults: SubmissionResponse | null;
   onReset: () => void;
+  duplicateIndices: Set<number>;
 }
 
 function EmptyCell() {
@@ -50,6 +51,7 @@ export function PreviewPanel({
   onSubmit,
   submissionResults,
   onReset,
+  duplicateIndices,
 }: PreviewPanelProps) {
   const selectAllRef = useRef<HTMLInputElement>(null);
   const allSelected = selectedRowIndices.size === parsedRows.length && parsedRows.length > 0;
@@ -170,9 +172,44 @@ export function PreviewPanel({
         </p>
       ) : (
         <>
-          <p className="mb-4 text-sm text-gray-500">
-            {selectedRowIndices.size} of {parsedRows.length} project{parsedRows.length !== 1 ? "s" : ""} selected for import
-          </p>
+          {/* Toolbar */}
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-sm text-gray-500">
+              {selectedRowIndices.size} of {parsedRows.length} project{parsedRows.length !== 1 ? "s" : ""} selected for import
+            </p>
+            <Button
+              className="bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-70"
+              onClick={onSubmit}
+              disabled={isSubmitting || selectedRowIndices.size === 0}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Creating projects...
+                </>
+              ) : (
+                "Create Projects in Clad"
+              )}
+            </Button>
+          </div>
+
+          {/* Summary strip */}
+          <div className="mb-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-xs text-gray-500">
+            <span>Assignee: {assigneeName}</span>
+            <span className="mx-3 text-gray-300">|</span>
+            <span>Labels: {labelNames}</span>
+            <span className="mx-3 text-gray-300">|</span>
+            <span>Line Items: {lineItemNames}</span>
+          </div>
+
+          {duplicateIndices.size > 0 && (
+            <div className="mb-3 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+              <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                {duplicateIndices.size} project{duplicateIndices.size !== 1 ? "s" : ""} {duplicateIndices.size !== 1 ? "have" : "has"} a Project ID that already exists in Clad. Review the highlighted rows before submitting.
+              </span>
+            </div>
+          )}
           <Table>
             <TableHeader>
               <TableRow>
@@ -191,55 +228,44 @@ export function PreviewPanel({
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-gray-500">Drop Type</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-gray-500">City</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-gray-500">Start Date</TableHead>
+                <TableHead className="text-xs font-semibold uppercase tracking-wide text-gray-500">Project ID</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {parsedRows.map((row, i) => (
-                <TableRow key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <TableCell>
-                    <input
-                      type="checkbox"
-                      checked={selectedRowIndices.has(i)}
-                      onChange={(e) => onRowSelectionChange(i, e.target.checked)}
-                      className="h-4 w-4 cursor-pointer accent-violet-700"
-                    />
-                  </TableCell>
-                  <TableCell className="text-sm text-gray-400">{i + 1}</TableCell>
-                  <TableCell className="text-sm text-gray-900">{row.title || <EmptyCell />}</TableCell>
-                  <TableCell className="text-sm text-gray-900">{row.address || <EmptyCell />}</TableCell>
-                  <TableCell className="text-sm text-gray-900">{row.dropType || <EmptyCell />}</TableCell>
-                  <TableCell className="text-sm text-gray-900">{row.city || <EmptyCell />}</TableCell>
-                  <TableCell className="text-sm text-gray-900">{row.startDate || <EmptyCell />}</TableCell>
-                </TableRow>
-              ))}
+              {parsedRows.map((row, i) => {
+                const isDuplicate = duplicateIndices.has(i);
+                return (
+                  <TableRow key={i} className={isDuplicate ? "bg-amber-50" : i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        checked={selectedRowIndices.has(i)}
+                        onChange={(e) => onRowSelectionChange(i, e.target.checked)}
+                        className="h-4 w-4 cursor-pointer accent-violet-700"
+                      />
+                    </TableCell>
+                    <TableCell className="text-sm text-gray-400">{i + 1}</TableCell>
+                    <TableCell className="text-sm text-gray-900">{row.title || <EmptyCell />}</TableCell>
+                    <TableCell className="text-sm text-gray-900">{row.address || <EmptyCell />}</TableCell>
+                    <TableCell className="text-sm text-gray-900">{row.dropType || <EmptyCell />}</TableCell>
+                    <TableCell className="text-sm text-gray-900">{row.city || <EmptyCell />}</TableCell>
+                    <TableCell className="text-sm text-gray-900">{row.startDate || <EmptyCell />}</TableCell>
+                    <TableCell className="text-sm text-gray-900">
+                      {isDuplicate ? (
+                        <span className="flex items-center gap-1 text-amber-600">
+                          <TriangleAlert className="h-3.5 w-3.5 shrink-0" />
+                          {row.projectId}
+                        </span>
+                      ) : (
+                        row.projectId || <EmptyCell />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
 
-          {/* Summary row */}
-          <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-xs text-gray-500">
-            <span>Assignee: {assigneeName}</span>
-            <span className="mx-3 text-gray-300">|</span>
-            <span>Labels: {labelNames}</span>
-            <span className="mx-3 text-gray-300">|</span>
-            <span>Line Items: {lineItemNames}</span>
-          </div>
-
-          <div className="mt-4 flex justify-end">
-            <Button
-              className="bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-70"
-              onClick={onSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  Creating projects...
-                </>
-              ) : (
-                "Create Projects in Clad"
-              )}
-            </Button>
-          </div>
         </>
       )}
     </div>

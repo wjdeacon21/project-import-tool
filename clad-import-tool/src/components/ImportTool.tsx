@@ -26,6 +26,8 @@ export function ImportTool() {
   const [parseError, setParseError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionResults, setSubmissionResults] = useState<SubmissionResponse | null>(null);
+  const [duplicateIndices, setDuplicateIndices] = useState<Set<number>>(new Set());
+  const [isCheckingDuplicates, setIsCheckingDuplicates] = useState(false);
 
   useEffect(() => {
     fetch("/api/org-data")
@@ -66,6 +68,7 @@ export function ImportTool() {
     setSelectedRowIndices(new Set(rows.map((_, i) => i)));
     setShowPreview(false);
     setSubmissionResults(null);
+    setDuplicateIndices(new Set());
   }
 
   function handleRowSelectionChange(index: number, checked: boolean) {
@@ -86,6 +89,28 @@ export function ImportTool() {
       setParsedRows([]);
       setShowPreview(false);
     }
+  }
+
+  async function handleCreatePreview() {
+    setIsCheckingDuplicates(true);
+    try {
+      const res = await fetch("/api/existing-project-ids");
+      const data = (await res.json()) as { projectIds?: string[]; error?: string };
+      if (data.projectIds) {
+        const existingIds = new Set(data.projectIds);
+        const dupes = new Set(
+          parsedRows
+            .map((row, i) => (row.projectId && existingIds.has(row.projectId) ? i : -1))
+            .filter((i) => i !== -1)
+        );
+        setDuplicateIndices(dupes);
+      }
+    } catch {
+      // don't block preview if the check fails
+    } finally {
+      setIsCheckingDuplicates(false);
+    }
+    setShowPreview(true);
   }
 
   async function handleSubmit() {
@@ -127,6 +152,7 @@ export function ImportTool() {
     setParseError(null);
     setIsSubmitting(false);
     setSubmissionResults(null);
+    setDuplicateIndices(new Set());
   }
 
   return (
@@ -158,7 +184,8 @@ export function ImportTool() {
           lineItems={lineItems}
           onLineItemChange={handleLineItemChange}
           canPreview={parsedRows.length > 0}
-          onCreatePreview={() => setShowPreview(true)}
+          onCreatePreview={handleCreatePreview}
+          isCheckingDuplicates={isCheckingDuplicates}
           orgData={orgData}
           orgDataError={orgDataError}
           isSubmitting={isSubmitting}
@@ -178,6 +205,7 @@ export function ImportTool() {
           onSubmit={handleSubmit}
           submissionResults={submissionResults}
           onReset={handleReset}
+          duplicateIndices={duplicateIndices}
         />
       </div>
     </div>
