@@ -91,7 +91,7 @@ export function PreviewPanel({
           }`}
         >
           {allSuccess
-            ? `✓ All ${total} project${total !== 1 ? "s" : ""} created successfully.`
+            ? `✓ ${total === 1 ? "1 project" : `All ${total} projects`} created successfully.`
             : allFailed
               ? "✗ All projects failed to create. Check the errors below."
               : `⚠ ${successCount} of ${total} projects created. ${failureCount} failed.`}
